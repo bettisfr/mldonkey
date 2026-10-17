@@ -1040,7 +1040,7 @@ let web_infos = define_option current_section ["web_infos"]
   IMPORTANT: Put the URL and the kind between quotes.
   EXAMPLE:
     web_infos = [
-    (\"server.met\", 0, \"http://www.gruk.org/server.met.gz\");
+    (\"server.met\", 0, \"http://upd.emule-security.org/server.met\");
     (\"hublist\", 0, \"http://dchublist.com/hublist.xml.bz2\");
     (\"guarding.p2p\", 96, \"http://upd.emule-security.org/ipfilter.zip\");
     (\"ocl\", 24, \"http://members.lycos.co.uk/appbyhp2/FlockHelpApp/contact-files/contact.ocl\");
@@ -1053,7 +1053,7 @@ let web_infos = define_option current_section ["web_infos"]
       ("guarding.p2p", 96,
         "http://upd.emule-security.org/ipfilter.zip");
       ("server.met", 0,
-        "http://www.gruk.org/server.met.gz");
+        "http://upd.emule-security.org/server.met");
       ("geoip.dat", 0,
         "http://www.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz");
       ("nodes.gzip", 0,
