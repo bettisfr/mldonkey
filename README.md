@@ -22,6 +22,8 @@ The old GTK interface is not built; use the Qt6/KF6 KMLDonkey frontend.
 - Added a command to change completed-download folders while preserving other
   shares, priorities and network restrictions, with explicit error replies.
 - Fixed single-clause search expressions and DNS worker runtime handling.
+- Generate bitstring sources before dependency scanning so parallel builds
+  work from a clean checkout.
 - Use `http://upd.emule-security.org/server.met` as the default eDonkey server
   list source, loaded at startup. Existing saved configurations keep their
   sources until explicitly changed; Kad is independent of this list.
@@ -60,7 +62,7 @@ Install the dependencies from [BUILDING.md](BUILDING.md), then run:
 
 ```sh
 ./scripts/build-deb.sh
-sudo apt install ./build-deb/mldonkey-server_3.2.1+ocaml5.6_amd64.deb
+sudo apt install ./build-deb/mldonkey-server_3.2.1+ocaml5.7_amd64.deb
 ```
 
 The package installs `/usr/bin/mlnet` and enables the `mldonkey-server`

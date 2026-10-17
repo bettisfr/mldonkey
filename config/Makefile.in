@@ -434,6 +434,9 @@ FASTTRACK_SRCS= \
 
   #$(SRC_FASTTRACK)/fasttrackPandora.ml \
 
+# These interfaces are needed while generating sources, before .depend exists.
+$(BITSTRING)/bitstring_persistent.cmi: $(BITSTRING)/bitstring.cmi
+
 $(BITSTRING)/bitstring_persistent.cmo: $(BITSTRING)/bitstring_persistent.ml $(BITSTRING)/bitstring_persistent.cmi build/bitstring.cma
 	$(OCAMLC) -I $(BITSTRING) -I +camlp4 camlp4lib.cma -c $<
 
@@ -1557,6 +1560,10 @@ endif
 
 resfile.o:
 	windres -o resfile.o config/mldonkey.rc
+
+# Bitstring inputs are listed as generated .ml files by the network targets.
+# Generate them before ocamldep scans sources, including on a fresh checkout.
+TMPSOURCES += $(patsubst %.mlp,%.ml,$(wildcard $(foreach dir,$(SUBDIRS),$(dir)/*.mlp)))
 
 depend:   $(RESFILE) \
 	$(PA_ZOG) $(LIB)/http_lexer.ml $(TMPSOURCES)

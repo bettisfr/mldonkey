@@ -1,3 +1,10 @@
+mldonkey (3.2.1+ocaml5.7) unstable; urgency=medium
+
+  * Generate bitstring .ml sources before scanning dependencies to fix clean
+    parallel builds failing with an unbound CommonOptions module.
+
+ -- MLDonkey fork maintainers <maintainers@example.invalid>  Sat, 17 Oct 2026 23:20:00 +0200
+
 mldonkey (3.2.1+ocaml5.6) unstable; urgency=medium
 
   * Replace the default gruk.org server.met source with eMule Security.
