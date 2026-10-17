@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 source_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-if [[ "${1:-}" == "--docker" ]]; then
-    docker build --tag mldonkey-build:ubuntu26.04 "$source_dir/packaging"
-    exec docker run --rm --user "$(id -u):$(id -g)" \
-        --env BUILD_JOBS="${BUILD_JOBS:-4}" \
-        --mount "type=bind,src=$source_dir,dst=/src" --workdir /src \
-        mldonkey-build:ubuntu26.04 ./scripts/build-deb.sh
+if (( $# )); then
+    echo "Usage: $0" >&2
+    exit 2
 fi
 cd "$source_dir"
 export PACKAGE_OUTPUT="$source_dir/build-deb"

@@ -35,15 +35,8 @@ service options and a systemd unit. Debhelper calculates shared-library
 dependencies and generates service enable/start/stop/upgrade handling.
 No compiler or development libraries are required at runtime.
 
-To build inside an Ubuntu 26.04 container:
-
-```sh
-./scripts/build-deb.sh --docker
-```
-
-Docker is used only for compilation. Sources and artifacts remain in this
-checkout and retain the calling user's ownership. No server is installed or
-started on the host by either build command. Tests are not run by the build.
+The build runs directly on the host. No server is installed or started by
+either build command. Tests are not run by the build.
 
 ## Scope
 

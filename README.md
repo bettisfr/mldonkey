@@ -26,7 +26,12 @@ The old GTK interface is not built; use the Qt6/KF6 KMLDonkey frontend.
 ## Status and compatibility
 
 **Experimental.** The server builds with OCaml 5.4.0 and GCC 15 on Ubuntu
-26.04 amd64. Initial startup, native DNS resolution, GUI protocol 33 login,
+26.04 amd64. A full native build and Debian package generation have succeeded
+on the host with the system OCaml compiler. The resulting
+package is `mldonkey-server_3.2.1+ocaml5.5_amd64.deb`; this native rebuild has
+not been reinstalled or checked at runtime.
+
+Initial startup, native DNS resolution, GUI protocol 33 login,
 statistics and console replies have been checked over a sustained connection.
 Initial manual use with KMLDonkey has also exercised searches, live downloads
 and completed files. Long-running operation, older OCaml 5 releases and other
@@ -35,7 +40,7 @@ broader regression checks.
 The legacy GTK GUI and auxiliary tools are outside the port's current scope.
 
 The executable includes the OCaml runtime: installing the `.deb` does not
-require OCaml, Opam or Docker. Its system library dependencies are determined
+require OCaml or Opam. Its system library dependencies are determined
 from the build environment. A package built on Ubuntu 26.04 is intended for
 that release and architecture.
 
@@ -53,12 +58,6 @@ Install the dependencies from [BUILDING.md](BUILDING.md), then run:
 ```sh
 ./scripts/build-deb.sh
 sudo apt install ./build-deb/mldonkey-server_3.2.1+ocaml5.5_amd64.deb
-```
-
-Or build using Docker, without installing development packages on the host:
-
-```sh
-./scripts/build-deb.sh --docker
 ```
 
 The package installs `/usr/bin/mlnet` and enables the `mldonkey-server`
