@@ -140,9 +140,9 @@ value try_poll(value fdlist, value timeout) /* ML */
     }
   }
 /*  printf("POLL: %d/%d\n", nfds, ufds_size); */
-  enter_blocking_section();
+  caml_enter_blocking_section();
   retcode = poll(ufds, nfds, tm);
-  leave_blocking_section();
+  caml_leave_blocking_section();
   if (retcode < 0) {
     uerror("poll", Nothing);
   }
@@ -213,9 +213,9 @@ value try_select(value fdlist, value timeout) /* ML */
     tv.tv_usec = (int) (1e6 * (tm - (int) tm));
     tvp = &tv;
   }
-  enter_blocking_section();
+  caml_enter_blocking_section();
   retcode = select(maxfd+1, &read, &write, &except, tvp);
-  leave_blocking_section();
+  caml_leave_blocking_section();
 
   if (retcode < 0) {
 /*    if(errno == EINTR) goto restart_select; */
@@ -372,7 +372,7 @@ value ml_getsize64(value path)
 {
 /*  int ret; */
 
-  return copy_int64(os_getfilesize(String_val(path)));
+  return caml_copy_int64(os_getfilesize(String_val(path)));
 }
 
 /*******************************************************************
@@ -387,7 +387,7 @@ value ml_getfdsize64(value fd_v)
 {
 /*  int ret; */
   OS_FD fd = Fd_val(fd_v);
-  return copy_int64(os_getfdsize(fd));
+  return caml_copy_int64(os_getfdsize(fd));
 }
 
 /*******************************************************************
@@ -481,11 +481,11 @@ value ml_ints_of_string(value s_v)
 
   error:
 /*   printf("Error while parsing[%s]\n",s); */
-  raise_not_found();
+  caml_raise_not_found();
 /*  a1 = a2 = a3 = a4 = 0; */
 
   ok:
-  res = alloc(4,0);
+  res = caml_alloc(4,0);
   Field(res, 0) = Val_int(a1);
   Field(res, 1) = Val_int(a2);
   Field(res, 2) = Val_int(a3);
@@ -562,7 +562,7 @@ value HASH_NAME##_unsafe_file (value digest_v, value filename_v, value file_size
   size_t len; \
  \
   if ((file = fopen (filename, "rb")) == NULL) \
-    raise_not_found(); \
+    caml_raise_not_found(); \
  \
   else { \
     HASH_INIT (&context); \
@@ -712,48 +712,32 @@ static void save_host_entry(struct hostent *entry)
 #endif
 }
 
-static int ml_gethostbyname(char *hostname)
+/* Called by the native DNS worker: this helper must not enter the OCaml
+   runtime. The synchronous caller releases the runtime around it instead. */
+static int ml_gethostbyname(const char *hostname)
 {
-  struct hostent * hp;
-
+  struct hostent *hp;
+#if HAS_GETHOSTBYNAME_R == 5 || HAS_GETHOSTBYNAME_R == 6
+  /* hp refers to these objects until save_host_entry has copied the result. */
+  struct hostent h;
+  char buffer[NETDB_BUFFER_SIZE];
+  int lookup_errno;
 #if HAS_GETHOSTBYNAME_R == 5
-  {
-    struct hostent h;
-    char buffer[NETDB_BUFFER_SIZE];
-    int h_errno;
-    enter_blocking_section();
-    hp = gethostbyname_r(hostname, &h, buffer, sizeof(buffer), &h_errno);
-    leave_blocking_section();
-  }
-#elif HAS_GETHOSTBYNAME_R == 6
-  {
-    struct hostent h;
-    char buffer[NETDB_BUFFER_SIZE];
-    int h_errno, rc;
-    enter_blocking_section();
-    rc = gethostbyname_r(hostname, &h, buffer, sizeof(buffer), &hp, &h_errno);
-    leave_blocking_section();
-    if (rc != 0) hp = NULL;
-  }
+  hp = gethostbyname_r(hostname, &h, buffer, sizeof(buffer), &lookup_errno);
 #else
-#ifdef GETHOSTBYNAME_IS_REENTRANT
-  enter_blocking_section();
-#endif  /* GETHOSTBYNAME_IS_REENTRANT */
+  int rc = gethostbyname_r(hostname, &h, buffer, sizeof(buffer), &hp, &lookup_errno);
+  if (rc != 0) hp = NULL;
+#endif
+#else
   hp = gethostbyname(hostname);
-#ifdef GETHOSTBYNAME_IS_REENTRANT
-  leave_blocking_section();
-#endif /* GETHOSTBYNAME_IS_REENTRANT */
-#endif /* HAS_GETHOSTBYNAME_R == 5 */
-
-  if (hp == (struct hostent *) NULL) return 0;
-
-/*  printf("No error\n"); */
+#endif
+  if (hp == NULL || hp->h_addrtype != AF_INET ||
+      hp->h_length != sizeof(struct in_addr)) return 0;
   save_host_entry(hp);
   return 1;
 }
 
-// unix/socketaddr.c
-extern value alloc_inet_addr(struct in_addr * a);
+#include <caml/socketaddr.h>
 
 static value alloc_one_addr(char volatile *a)
 {
@@ -783,8 +767,12 @@ value ml_ip_job_start(value job_v)
 {
   CAMLparam1(job_v);
 
-  char *hostname = String_val(Field(job_v,0));
-  if(ml_gethostbyname(hostname)){
+  char *hostname = caml_stat_strdup(String_val(Field(job_v, 0)));
+  caml_enter_blocking_section();
+  int found = ml_gethostbyname(hostname);
+  caml_leave_blocking_section();
+  caml_stat_free(hostname);
+  if(found){
     Store_field(job_v, 1, addr_list_of_job())
     Store_field(job_v, 2, Val_false);
   } else {
@@ -812,7 +800,8 @@ value ml_has_pthread(value unit)
 #include <sys/time.h>
 
 static int thread_started = 0;
-static int volatile ip_job_done = 1;
+/* Completion publishes the native result to the OCaml thread. */
+static _Atomic int ip_job_done = 1;
 #define JOB_HOSTNAME_SIZE 256
 static char volatile job_hostname[JOB_HOSTNAME_SIZE];
 static int volatile job_result = 0;
@@ -880,7 +869,7 @@ value ml_ip_job_start(value job_v)
   if (caml_string_length(Field(job_v, 0)) >= JOB_HOSTNAME_SIZE)
   {
     // hostname too long - fail immediately
-    job_result = 1;
+    job_result = 0;
     ip_job_done = 1;
     return Val_unit;
   }
@@ -906,13 +895,13 @@ value ml_ip_job_start(value job_v)
     }
   }
 
-  enter_blocking_section();
+  caml_enter_blocking_section();
   pthread_mutex_lock(&mutex);
 /*  printf("Starting job\n");  */
   ip_job_done = 0; /* Thread can run ... */
   pthread_cond_signal(&cond);  
   pthread_mutex_unlock(&mutex);
-  leave_blocking_section ();
+  caml_leave_blocking_section ();
 
   return Val_unit;
 }
@@ -1044,16 +1033,16 @@ copy_statfs (struct statfs *buf)
   CAMLparam0 ();
   CAMLlocal2 (bufv, v);
   bufv = caml_alloc (11, 0);
-  v = copy_int64 (buf->f_type); caml_modify (&Field (bufv, 0), v);
-  v = copy_int64 (buf->f_bsize); caml_modify (&Field (bufv, 1), v);
-  v = copy_int64 (buf->f_blocks); caml_modify (&Field (bufv, 2), v);
-  v = copy_int64 (buf->f_bfree); caml_modify (&Field (bufv, 3), v);
-  v = copy_int64 (buf->f_bavail); caml_modify (&Field (bufv, 4), v);
-  v = copy_int64 (buf->f_files); caml_modify (&Field (bufv, 5), v);
-  v = copy_int64 (buf->f_ffree); caml_modify (&Field (bufv, 6), v);
-  v = copy_int64 (buf->f_namelen); caml_modify (&Field (bufv, 8), v);
-  v = copy_string ("-1"); caml_modify (&Field (bufv, 9), v);
-  v = copy_int64 (-1); caml_modify (&Field (bufv, 10), v);
+  v = caml_copy_int64 (buf->f_type); caml_modify (&Field (bufv, 0), v);
+  v = caml_copy_int64 (buf->f_bsize); caml_modify (&Field (bufv, 1), v);
+  v = caml_copy_int64 (buf->f_blocks); caml_modify (&Field (bufv, 2), v);
+  v = caml_copy_int64 (buf->f_bfree); caml_modify (&Field (bufv, 3), v);
+  v = caml_copy_int64 (buf->f_bavail); caml_modify (&Field (bufv, 4), v);
+  v = caml_copy_int64 (buf->f_files); caml_modify (&Field (bufv, 5), v);
+  v = caml_copy_int64 (buf->f_ffree); caml_modify (&Field (bufv, 6), v);
+  v = caml_copy_int64 (buf->f_namelen); caml_modify (&Field (bufv, 8), v);
+  v = caml_copy_string ("-1"); caml_modify (&Field (bufv, 9), v);
+  v = caml_copy_int64 (-1); caml_modify (&Field (bufv, 10), v);
   CAMLreturn (bufv);
 }
 
@@ -1065,7 +1054,7 @@ statfs_statfs (value pathv)
   const unsigned char *path = String_val (pathv);
   struct statfs buf;
   if (statfs (path, &buf) == -1)
-    raise_constant(*(value *)caml_named_value("error"));
+    caml_raise_constant(*(value *)caml_named_value("error"));
   bufv = copy_statfs (&buf);
   CAMLreturn (bufv);
 }
@@ -1099,40 +1088,40 @@ copy_statfs (struct statfs *buf)
   CAMLlocal2 (bufv, v);
   bufv = caml_alloc (11, 0);
 #if ((defined (sun) || defined (__sun__))) || (defined(__FreeBSD__) && __FreeBSD_version >= 503001) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__alpha__)
-  v = copy_int64 (-1); caml_modify (&Field (bufv, 0), v);
+  v = caml_copy_int64 (-1); caml_modify (&Field (bufv, 0), v);
 #else
-  v = copy_int64 (buf->f_type); caml_modify (&Field (bufv, 0), v);
+  v = caml_copy_int64 (buf->f_type); caml_modify (&Field (bufv, 0), v);
 #endif  /* ((defined (sun) || defined (__sun__))) || (defined(__FreeBSD__) && __FreeBSD_version >= 503001) || defined(__OpenBSD__) || defined(__NetBSD__) */
-  v = copy_int64 (buf->f_bsize); caml_modify (&Field (bufv, 1), v);
-  v = copy_int64 (buf->f_blocks); caml_modify (&Field (bufv, 2), v);
-  v = copy_int64 (buf->f_bfree); caml_modify (&Field (bufv, 3), v);
-  v = copy_int64 (buf->f_bavail); caml_modify (&Field (bufv, 4), v);
-  v = copy_int64 (buf->f_files); caml_modify (&Field (bufv, 5), v);
-  v = copy_int64 (buf->f_ffree); caml_modify (&Field (bufv, 6), v);
+  v = caml_copy_int64 (buf->f_bsize); caml_modify (&Field (bufv, 1), v);
+  v = caml_copy_int64 (buf->f_blocks); caml_modify (&Field (bufv, 2), v);
+  v = caml_copy_int64 (buf->f_bfree); caml_modify (&Field (bufv, 3), v);
+  v = caml_copy_int64 (buf->f_bavail); caml_modify (&Field (bufv, 4), v);
+  v = caml_copy_int64 (buf->f_files); caml_modify (&Field (bufv, 5), v);
+  v = caml_copy_int64 (buf->f_ffree); caml_modify (&Field (bufv, 6), v);
 #if ((defined (sun) || defined (__sun__))) || defined (__hpux__) || defined(__alpha__)
-  v = copy_int64 (-1); caml_modify (&Field (bufv, 7), v);
-  v = copy_int64 (buf->f_namemax); caml_modify (&Field (bufv, 8), v);
+  v = caml_copy_int64 (-1); caml_modify (&Field (bufv, 7), v);
+  v = caml_copy_int64 (buf->f_namemax); caml_modify (&Field (bufv, 8), v);
 # if ! defined(__alpha__)
-  v = copy_string (buf->f_basetype); caml_modify (&Field (bufv, 9), v);
+  v = caml_copy_string (buf->f_basetype); caml_modify (&Field (bufv, 9), v);
 # else
-  v = copy_string ("-1"); caml_modify (&Field (bufv, 9), v);
+  v = caml_copy_string ("-1"); caml_modify (&Field (bufv, 9), v);
 # endif
-  v = copy_int64 (buf->f_frsize); caml_modify (&Field (bufv, 10), v);
+  v = caml_copy_int64 (buf->f_frsize); caml_modify (&Field (bufv, 10), v);
 #else
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__) || defined(__DragonFly__) || defined(__FreeBSD_kernel__)
 #  if defined(__OpenBSD__) || defined(__NetBSD__) || (defined(__FreeBSD__) && __FreeBSD_version < 502000) || defined(__DragonFly__) || defined(__APPLE__)
 #    include <sys/syslimits.h>
-     v = copy_int64 (NAME_MAX); caml_modify (&Field (bufv, 8), v);
+     v = caml_copy_int64 (NAME_MAX); caml_modify (&Field (bufv, 8), v);
 #  else
-     v = copy_int64 (buf->f_namemax); caml_modify (&Field (bufv, 8), v);
+     v = caml_copy_int64 (buf->f_namemax); caml_modify (&Field (bufv, 8), v);
 #  endif /* (__OpenBSD__) || defined(__NetBSD__) || (defined(__FreeBSD__) && __FreeBSD_version < 502000) */
-  v = copy_string (buf->f_fstypename); caml_modify (&Field (bufv, 9), v);
+  v = caml_copy_string (buf->f_fstypename); caml_modify (&Field (bufv, 9), v);
 #else
-  v = copy_int64 (buf->f_namelen); caml_modify (&Field (bufv, 8), v);
-  v = copy_string ("-1"); caml_modify (&Field (bufv, 9), v);
+  v = caml_copy_int64 (buf->f_namelen); caml_modify (&Field (bufv, 8), v);
+  v = caml_copy_string ("-1"); caml_modify (&Field (bufv, 9), v);
 #endif /* defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__) */
   caml_modify (&Field (bufv, 7), Val_unit);
-  v = copy_int64 (-1); caml_modify (&Field (bufv, 10), v);
+  v = caml_copy_int64 (-1); caml_modify (&Field (bufv, 10), v);
 #endif /*  ((defined (sun) || defined (__sun__))) || defined (__hpux__) */
   CAMLreturn (bufv);
 }
@@ -1152,11 +1141,11 @@ statfs_statfs (value pathv)
   struct statfs buf;
   if (statfs (path, &buf) == -1)
 #endif  /* ((defined (sun) || defined (__sun__))) || (defined(__NetBSD__) && (__NetBSD_Version__ > 299000000)) || defined (__hpux__) */
-    raise_constant(*(value *)caml_named_value("error"));
+    caml_raise_constant(*(value *)caml_named_value("error"));
   bufv = copy_statfs (&buf);
   CAMLreturn (bufv);
 #else
-  raise_constant(*(value *)caml_named_value("not supported"));
+  caml_raise_constant(*(value *)caml_named_value("not supported"));
 #endif  /* HAVE_STATS */
 }
 #endif  /* defined(__MINGW32__) */
@@ -1261,9 +1250,9 @@ ml_check_endianness(void)
   CAMLparam0 ();
   CAMLlocal1 (v);
 #ifdef ARCH_BIG_ENDIAN
-  v = copy_string ("big endian");
+  v = caml_copy_string ("big endian");
 #else
-  v = copy_string ("little endian");
+  v = caml_copy_string ("little endian");
 #endif
   CAMLreturn (v);
 }
@@ -1367,14 +1356,14 @@ ml_getrlimit(value resource)
     uerror("getrlimit", Nothing);
 
   
-  retval = alloc_tuple(2);
+  retval = caml_alloc_tuple(2);
   Field(retval, 0) = Val_int(lim.rlim_cur);
   Field(retval, 1) = Val_int(lim.rlim_max);
 
   CAMLreturn(retval);
 
 #else
-  failwith("getrlimit unimplemented");
+  caml_failwith("getrlimit unimplemented");
 #endif
 }
 
@@ -1472,7 +1461,7 @@ ml_setrlimit(value resource, value rlimit)
   return Val_unit;
 
 #else
-  failwith("getrlimit unimplemented");
+  caml_failwith("getrlimit unimplemented");
 #endif
 }
 

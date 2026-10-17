@@ -59,8 +59,8 @@ let load_nodes_file filename =
   )
 
 let unpack_nodes_gzip filename url =
-  let ext = String.lowercase (Filename2.extension filename) in
-  let last_ext = String.lowercase (Filename2.last_extension filename) in
+  let ext = String.lowercase_ascii (Filename2.extension filename) in
+  let last_ext = String.lowercase_ascii (Filename2.last_extension filename) in
   let real_ext = if last_ext = ".zip" then last_ext else ext in
     match real_ext with
     | ".gzip" -> (
@@ -245,10 +245,10 @@ let connect_server h =
 
               (match !connection_header_hook with
                   None ->
-                    s.[0] <- '\250';
-                    s.[1] <- '\000';
-                    s.[2] <- '\182';
-                    s.[3] <- '\043';
+                    Bytes.set s (0) @@ '\250';
+                    Bytes.set s (1) @@ '\000';
+                    Bytes.set s (2) @@ '\182';
+                    Bytes.set s (3) @@ '\043';
                 | Some f -> f s);
 
               cipher_packet_set out_cipher s 4;

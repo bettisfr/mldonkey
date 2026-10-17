@@ -268,11 +268,11 @@ let rec next_ogg_stream ic ogg_infos str stream_number =
   page_seek ic str pos;
   let pos = pos_in ic in
 (*
-  let serial_number = String.create 4 in
+  let serial_number = Bytes.create 4 in
   seek_in ic (pos+10);
   really_input ic serial_number 0 4;
   let stream_number = read32 serial_number in
-  lprintf "Stream Serial Number: %0.f\n" stream_number;
+  lprintf "Stream Serial Number: %0.0f\n" stream_number;
 *)
   seek_in ic (pos+24);
   let content_type = really_input_string ic 1 in
@@ -295,7 +295,7 @@ let rec next_ogg_stream ic ogg_infos str stream_number =
 
 and get_ogg_video_info  ic ogg_infos str sizeof_packet stream_number =
   let s = really_input_string ic sizeof_packet in
-  let codec = String.lowercase (String.sub s 0 4) in
+  let codec = String.lowercase_ascii (String.sub s 0 4) in
   let time_unit = read64 (String.sub s 8 8) in
   let video_width =
     if sizeof_packet >= sizeof_old_ogm_packet
@@ -628,7 +628,7 @@ let get_info file =
       search_info_ogg ic);
     let es = 
       try 
-        List.map String.lowercase (Filename2.extensions file) 
+        List.map String.lowercase_ascii (Filename2.extensions file) 
       with _ -> []
     in
     match List.rev es with

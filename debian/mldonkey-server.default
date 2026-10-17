@@ -1,0 +1,4 @@
+# Administration interfaces are limited to this machine by default.
+# Additional options may be appended; persistent core settings are in
+# /var/lib/mldonkey/downloads.ini (stop the service before editing).
+MLDONKEY_OPTIONS="-gui_bind_addr 127.0.0.1 -http_bind_addr 127.0.0.1 -telnet_port 0"

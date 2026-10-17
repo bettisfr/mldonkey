@@ -155,8 +155,8 @@ let load_server_met filename =
   else 0
 
 let unpack_server_met filename url =
-  let ext = String.lowercase (Filename2.extension filename) in
-    let last_ext = String.lowercase (Filename2.last_extension filename) in
+  let ext = String.lowercase_ascii (Filename2.extension filename) in
+    let last_ext = String.lowercase_ascii (Filename2.last_extension filename) in
     let real_ext = if last_ext = ".zip" then last_ext else ext in
     match real_ext with
       | ".zip" ->

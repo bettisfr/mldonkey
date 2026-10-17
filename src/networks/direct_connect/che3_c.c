@@ -525,14 +525,14 @@ char *encode_he3_data(char *str, int len, int* final_len)
 value ml_che3_decompress(value s_v)
 {
   char *s = String_val(s_v);
-  int len = string_length(s_v);
+  int len = caml_string_length(s_v);
   char *result;
   int final_len;
   value res;
   
   result = decode_he3_data(s, len, &final_len);
 
-  res = alloc_string(final_len);
+  res = caml_alloc_string(final_len);
   memmove(String_val(res), result, final_len);
 
   return res;
@@ -541,14 +541,14 @@ value ml_che3_decompress(value s_v)
 value ml_che3_compress(value s_v)
 {
   char *s = String_val(s_v);
-  int len = string_length(s_v);
+  int len = caml_string_length(s_v);
   char *result;
   int final_len;
   value res;
   
   result = encode_he3_data(s, len, &final_len);
 
-  res = alloc_string(final_len);
+  res = caml_alloc_string(final_len);
   memmove(String_val(res), result, final_len);
 
   return res;

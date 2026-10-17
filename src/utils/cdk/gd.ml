@@ -126,8 +126,11 @@ external do_fill: t -> int -> int -> int -> unit
 external do_save_png: t -> string -> unit = "ml_save_png"
 external do_save_jpeg: t -> string -> int -> unit = "ml_save_jpeg"
 
-external do_dump_png: t -> out_channel -> unit = "ml_dump_png"
-external do_dump_jpeg: t -> out_channel -> int -> unit = "ml_dump_jpeg"
+external png_data: t -> string = "ml_png_data"
+external jpeg_data: t -> int -> string = "ml_jpeg_data"
+
+let do_dump_png image channel = output_string channel (png_data image)
+let do_dump_jpeg image channel quality = output_string channel (jpeg_data image quality)
 
 
 (* External functions related to colors *)

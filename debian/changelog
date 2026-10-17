@@ -1,0 +1,40 @@
+mldonkey (3.2.1+ocaml5.5) unstable; urgency=medium
+
+  * Add a command to update primary incoming folders while preserving other
+    shares, priorities and network restrictions.
+
+  * Return directory access errors as command replies so graphical clients
+    can report failures immediately instead of waiting for a timeout.
+
+ -- MLDonkey fork maintainers <maintainers@example.invalid>  Sat, 17 Oct 2026 22:00:00 +0200
+
+mldonkey (3.2.1+ocaml5.4) unstable; urgency=medium
+
+  * Add an administrator command to check download folder access without
+    terminating the core, for graphical path configuration.
+
+ -- MLDonkey fork maintainers <maintainers@example.invalid>  Sat, 17 Oct 2026 21:00:00 +0200
+
+mldonkey (3.2.1+ocaml5.3) unstable; urgency=medium
+
+  * Preserve single-clause AND/OR search expressions received from graphical
+    clients instead of converting keyword-only searches to empty queries.
+
+ -- MLDonkey fork maintainers <maintainers@example.invalid>  Sat, 17 Oct 2026 20:20:00 +0200
+
+mldonkey (3.2.1+ocaml5.2) unstable; urgency=medium
+
+  * Fix DNS worker crashes caused by calls into an unregistered OCaml runtime.
+  * Keep reentrant resolver storage alive until its result has been copied
+    and publish DNS completion using an atomic flag.
+  * Initialize the administration allowlist before any configuration is loaded.
+
+ -- MLDonkey fork maintainers <maintainers@example.invalid>  Sat, 17 Oct 2026 20:15:00 +0200
+
+mldonkey (3.2.1+ocaml5.1) unstable; urgency=medium
+
+  * Port the server to OCaml 5, including native pointer wrappers and
+    current standard-library and C runtime interfaces.
+  * Package a system service with localhost administration interfaces.
+
+ -- MLDonkey fork maintainers <maintainers@example.invalid>  Sat, 17 Oct 2026 20:00:00 +0200

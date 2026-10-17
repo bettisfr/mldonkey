@@ -187,7 +187,7 @@ static int maps_add_item( ml_upnpmp_t * map )
 	int found;
 
 	if ( ! g_inited ){
-		dbg_printf("g_maps not initialize!\n");
+		dbg_printf("g_maps not caml_initialize!\n");
 		return -1;
 	}
 
@@ -235,7 +235,7 @@ static int maps_remove_item( ml_upnpmp_t * map )
 	int found;
 
 	if ( ! g_inited ){
-		dbg_printf("g_maps not initialize!\n");
+		dbg_printf("g_maps not caml_initialize!\n");
 		return -1;
 	}
 
@@ -303,7 +303,7 @@ ml_upnpSetMaps(value map_list_v) {
 	value map_v;
 
 	if ( ! g_inited ){
-		dbg_printf("g_maps not initialize!\n");
+		dbg_printf("g_maps not caml_initialize!\n");
 		return Val_unit;
 	}
 	const int len = Wosize_val(map_list_v);
@@ -1075,7 +1075,7 @@ ml_upnpRemoveAllMaps(value wait_v)
 	if (wait < 1) wait = MAX_THREAD_WAIT;
 
 	if ( ! g_inited ){
-		dbg_printf("g_maps not initialize!\n");
+		dbg_printf("g_maps not caml_initialize!\n");
 		return Val_unit;
 	}
 
@@ -1136,7 +1136,7 @@ ml_upnpGetMaps(value unused)
 	maps = Val_emptylist;
 
 	if ( ! g_inited ){
-		dbg_printf("g_maps not initialize!\n");
+		dbg_printf("g_maps not caml_initialize!\n");
 		CAMLreturn( Val_unit );
 	}
 

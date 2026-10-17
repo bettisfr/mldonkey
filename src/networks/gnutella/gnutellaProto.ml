@@ -824,9 +824,9 @@ let create_qrt_table words table_size =
       array.(Int64.to_int pos) <- 1;
   ) words;
   let string_size = table_length/2 in
-  let table = String.create  string_size in
+  let table = Bytes.create  string_size in
   for i = 0 to string_size - 1 do
-    table.[i] <- char_of_int (
+    Bytes.set table (i) @@ char_of_int (
       (
         ((array.(i*2) - old_array.(i*2)) land 15) lsl 4) + 
       ((array.(i*2+1) - old_array.(i*2+1)) land 15))
@@ -928,13 +928,13 @@ let translate_query q =
           match field with
             Field_Type -> 
               begin
-                match String.lowercase w with
+                match String.lowercase_ascii w with
                   "audio" -> audio := true
                 | _ -> add_words w
               end
           | Field_Format ->
               begin
-                match String.lowercase w with
+                match String.lowercase_ascii w with
                 | "mp3" | "wav" -> 
                     add_words w;
                     audio := true

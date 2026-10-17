@@ -156,7 +156,7 @@ let copy oldname newname =
       (try Unix.fchmod descr stats.Unix.LargeFile.st_perm
        with e -> lprintf_nl "copy: failed to preserve mode : %s" (Printexc.to_string e)));
       let buffer_len = 8192 in
-      let buffer = String.create buffer_len in
+      let buffer = Bytes.create buffer_len in
       let rec copy_file () =
         let n = input ic buffer 0 buffer_len in
         if n = 0 then () else begin 
@@ -181,8 +181,7 @@ let rename oldname newname =
           if not !copied then
             Sys.remove newname
       
-external c_seek64 : Unix.file_descr -> int64 -> Unix.seek_command -> int64 =
-  "unix_lseek_64" 
+let c_seek64 = Unix.LargeFile.lseek 
 external c_getsize64 : string -> int64 = "ml_getsize64"
 external c_getfdsize64 : Unix.file_descr -> int64 = "ml_getfdsize64"
 (* c_ftruncate64 sets size, optionally using a sparse file *)
@@ -205,9 +204,9 @@ let rec remove_all_directory dirname =
   Unix.rmdir dirname
 
 let random () =
-  let s = String.create 7 in
+  let s = Bytes.create 7 in
   for i = 0 to 6 do
-    s.[i] <- char_of_int (97 + Random.int 26)
+    Bytes.set s (i) @@ char_of_int (97 + Random.int 26)
   done;
   Bytes.unsafe_to_string s
 

@@ -116,7 +116,7 @@ let string_to_che3_to_file str filename =
   (try
     let s = Che3.compress str in
     let wlen = 4096 in
-    (*let str = String.create slen in*)
+    (*let str = Bytes.create slen in*)
     let slen = String.length s in
     let file_fd = Unix32.create_rw filename in
     let rec write pos =
@@ -171,7 +171,7 @@ let file_to_bz2_to_buffer filename =
 let buffer_to_bz2_to_file buf filename =
   (try 
     let slen = 4096 in
-    (*let str = String.create slen in*)
+    (*let str = Bytes.create slen in*)
     let blen = Buffer.length buf in
     let oc = Bzip2.open_out filename in
     let rec compress pos =
@@ -332,7 +332,7 @@ let () =
       let dcsh = {
         dc_shared_fullname = fullname;
         dc_shared_codedname = codedname;
-        dc_shared_searchname = String.lowercase (List.nth (String2.splitn codedname '/' 1) 1);
+        dc_shared_searchname = String.lowercase_ascii (List.nth (String2.splitn codedname '/' 1) 1);
         dc_shared_size = size;
         dc_shared_tiger_root = empty_string;
         (*dc_shared_tiger_array = [||];*)

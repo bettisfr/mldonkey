@@ -228,10 +228,10 @@ let create_temp_file file_temp file_files file_state =
   file_fd
 
 let make_tracker_url url =
-  if String2.check_prefix (String.lowercase url) "http://" then 
+  if String2.check_prefix (String.lowercase_ascii url) "http://" then 
     `Http url (* do not change the case of the url *)
   else
-    try Scanf.sscanf (String.lowercase url) "udp://%s@:%d" (fun host port -> `Udp (host,port))
+    try Scanf.sscanf (String.lowercase_ascii url) "udp://%s@:%d" (fun host port -> `Udp (host,port))
     with _ -> `Other url
 
 (** invariant: [make_tracker_url (show_tracker_url url) = url] *)

@@ -26,10 +26,53 @@ Boston, MA  02110-1301, USA.
 #include <caml/callback.h>
 #include <caml/fail.h>
 #include <caml/memory.h>
+#include <caml/custom.h>
+#include <string.h>
 
 /* Bzip2 interface code */
 
-#define BZStream_val(v) ((bz_stream *) (v))
+#ifdef USE_BZIP2
+/* Keep the native stream outside the moving OCaml heap. */
+typedef struct {
+  bz_stream *stream;
+  int compress;
+} bz_handle;
+
+#define BZHandle_val(v) ((bz_handle *) Data_custom_val(v))
+
+static bz_stream *bzstream_val(value v)
+{
+  bz_stream *stream = BZHandle_val(v)->stream;
+  if (stream == NULL) caml_invalid_argument("Bzip2: stream is closed");
+  return stream;
+}
+
+#define BZStream_val(v) bzstream_val(v)
+
+static void finalize_bzstream(value v)
+{
+  bz_handle *handle = BZHandle_val(v);
+  if (handle->stream != NULL) {
+    if (handle->compress)
+      BZ2_bzCompressEnd(handle->stream);
+    else
+      BZ2_bzDecompressEnd(handle->stream);
+    caml_stat_free(handle->stream);
+    handle->stream = NULL;
+  }
+}
+
+static struct custom_operations bzstream_ops = {
+  .identifier = "mldonkey.bzip2.stream",
+  .finalize = finalize_bzstream,
+  .compare = custom_compare_default,
+  .hash = custom_hash_default,
+  .serialize = custom_serialize_default,
+  .deserialize = custom_deserialize_default,
+  .compare_ext = custom_compare_ext_default,
+  .fixed_length = custom_fixed_length_default
+};
+#endif
 
 static const value * camlzip_bzerror_exn = NULL;
 
@@ -42,10 +85,10 @@ static void camlzip_bzerror(char * fn, int err)
   if (camlzip_bzerror_exn == NULL) {
     camlzip_bzerror_exn = caml_named_value("Bzlib.Error");
     if (camlzip_bzerror_exn == NULL)
-      invalid_argument("Exception Bzlib.Error not initialized");
+      caml_invalid_argument("Exception Bzlib.Error not initialized");
   }
   Begin_roots3(s1, s2, bucket);
-    s1 = copy_string(fn);
+    s1 = caml_copy_string(fn);
     switch (err) {
     case BZ_CONFIG_ERROR:
       s2 = Val_int(0);
@@ -68,23 +111,25 @@ static void camlzip_bzerror(char * fn, int err)
     default:
       s2 = Val_int(6);
     }
-    bucket = alloc_small(3, 0);
+    bucket = caml_alloc_small(3, 0);
     Field(bucket, 0) = *camlzip_bzerror_exn;
     Field(bucket, 1) = s1;
     Field(bucket, 2) = s2;
   End_roots();
-  mlraise(bucket);
+  caml_raise(bucket);
 }
 
-static value camlzip_new_bzstream(void)
+static value camlzip_new_bzstream(int compress)
 {
-  bz_stream * bzs = (bz_stream *) malloc(sizeof(bz_stream));
-  bzs->bzalloc = NULL;
-  bzs->bzfree = NULL;
-  bzs->opaque = NULL;
-  bzs->next_in = NULL;
-  bzs->next_out = NULL;
-  return (value) bzs;
+  CAMLparam0();
+  CAMLlocal1(res);
+  res = caml_alloc_custom(&bzstream_ops, sizeof(bz_handle), sizeof(bz_stream), 1);
+  BZHandle_val(res)->stream = NULL;
+  BZHandle_val(res)->compress = compress;
+  bz_stream *stream = caml_stat_alloc(sizeof(bz_stream));
+  memset(stream, 0, sizeof(bz_stream));
+  BZHandle_val(res)->stream = stream;
+  CAMLreturn(res);
 }
 
 int camlzip_action_table[] = { BZ_RUN, BZ_FLUSH, BZ_FINISH };
@@ -94,15 +139,17 @@ int camlzip_action_table[] = { BZ_RUN, BZ_FLUSH, BZ_FINISH };
 value camlzip_bzCompressInit(value blockSize100k, value verbosity, value workFactor) {
 #ifdef USE_BZIP2
   int err;
-  value vbzs = camlzip_new_bzstream();
+  CAMLparam3(blockSize100k, verbosity, workFactor);
+  CAMLlocal1(vbzs);
+  vbzs = camlzip_new_bzstream(1);
   if ((err = BZ2_bzCompressInit(BZStream_val(vbzs),
 			 Int_val(blockSize100k),
 			 Int_val(verbosity),
 			 Int_val(workFactor))) != BZ_OK)
     camlzip_bzerror("Zlib.deflateInit", err);
-  return vbzs;
+  CAMLreturn(vbzs);
 #else
-  failwith("Bzip2 compression not supported.");
+  caml_failwith("Bzip2 compression not supported.");
 #endif
 }
 
@@ -126,13 +173,13 @@ value camlzip_bzCompress(value vzs, value srcbuf, value srcpos, value srclen,
   used_out = Long_val(dstlen) - zs->avail_out;
   zs->next_in = NULL;         /* not required, but cleaner */
   zs->next_out = NULL;        /* (avoid dangling pointers into Caml heap) */
-  res = alloc_small(3, 0);
+  res = caml_alloc_small(3, 0);
   Field(res, 0) = Val_bool(retcode == BZ_STREAM_END);
   Field(res, 1) = Val_int(used_in);
   Field(res, 2) = Val_int(used_out);
   return res;
 #else
-  failwith("Bzip2 compression not supported");
+  caml_failwith("Bzip2 compression not supported");
 #endif
 }
 
@@ -147,9 +194,10 @@ value camlzip_bzCompressEnd(value stream) {
   int err;
   if ((err = BZ2_bzCompressEnd(BZStream_val(stream))) != BZ_OK)
     camlzip_bzerror("Bzlib.compress_end", err);
-  free(BZStream_val(stream));
+  caml_stat_free(BZHandle_val(stream)->stream);
+  BZHandle_val(stream)->stream = NULL;
 #else
-  failwith("Bzip2 compression not supported");
+  caml_failwith("Bzip2 compression not supported");
 #endif
   return Val_unit;
 }
@@ -158,12 +206,14 @@ value camlzip_bzDecompressInit(value verbosity, value small)
 {
 #ifdef USE_BZIP2
   int err;
-  value vzs = camlzip_new_bzstream();
+  CAMLparam2(verbosity, small);
+  CAMLlocal1(vzs);
+  vzs = camlzip_new_bzstream(0);
   if ((err = BZ2_bzDecompressInit(BZStream_val(vzs), Int_val(verbosity), Bool_val(small))) != BZ_OK)
     camlzip_bzerror("Bzlib.decompress_init", err);
-  return vzs;
+  CAMLreturn(vzs);
 #else
-  failwith("Bzip2 compression not supported");
+  caml_failwith("Bzip2 compression not supported");
 #endif
 }
 
@@ -187,13 +237,13 @@ value camlzip_bzDecompress(value vzs, value srcbuf, value srcpos, value srclen,
   used_out = Long_val(dstlen) - zs->avail_out;
   zs->next_in = NULL;           /* not required, but cleaner */
   zs->next_out = NULL;          /* (avoid dangling pointers into Caml heap) */
-  res = alloc_small(3, 0);
+  res = caml_alloc_small(3, 0);
   Field(res, 0) = Val_bool(retcode == BZ_STREAM_END);
   Field(res, 1) = Val_int(used_in);
   Field(res, 2) = Val_int(used_out);
   return res;
 #else
-  failwith("Bzip2 compression not supported");
+  caml_failwith("Bzip2 compression not supported");
 #endif
 }
 
@@ -208,9 +258,10 @@ value camlzip_bzDecompressEnd(value stream) {
   int err;
   if ((err = BZ2_bzDecompressEnd(BZStream_val(stream))) != BZ_OK)
     camlzip_bzerror("Bzlib.decompressEnd", err);
-  free(BZStream_val(stream));
+  caml_stat_free(BZHandle_val(stream)->stream);
+  BZHandle_val(stream)->stream = NULL;
 #else
-  failwith("Bzip2 compression not supported");
+  caml_failwith("Bzip2 compression not supported");
 #endif
   return Val_unit;
 }
@@ -220,9 +271,9 @@ int camlzip_bzlibversion(void)
   CAMLparam0 ();
   CAMLlocal1 (v);
 #ifdef HAVE_BZLIBVERSION
-  v = copy_string (BZ2_bzlibVersion());
+  v = caml_copy_string (BZ2_bzlibVersion());
   CAMLreturn (v);
 #else
-  failwith("bzlibVersion not found");
+  caml_failwith("bzlibVersion not found");
 #endif
 }

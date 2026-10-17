@@ -1923,10 +1923,10 @@ let translate_query q =
     | QHasField(field, w) ->
         begin
           match field with
-          | Field_Type -> realm := String.lowercase w
+          | Field_Type -> realm := String.lowercase_ascii w
           | Field_Format ->
               begin
-                match String.lowercase w with
+                match String.lowercase_ascii w with
                 | "mp3" | "wav" ->
                     add_words w;
                     realm := "audio"

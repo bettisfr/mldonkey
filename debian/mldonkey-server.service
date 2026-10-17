@@ -1,0 +1,21 @@
+[Unit]
+Description=MLDonkey multi-network server
+After=network.target
+
+[Service]
+Type=simple
+User=mldonkey
+Group=mldonkey
+StateDirectory=mldonkey
+StateDirectoryMode=0750
+WorkingDirectory=/var/lib/mldonkey
+Environment=MLDONKEY_DIR=/var/lib/mldonkey
+EnvironmentFile=-/etc/default/mldonkey-server
+ExecStart=/usr/bin/mlnet -stdout $MLDONKEY_OPTIONS
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=60
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

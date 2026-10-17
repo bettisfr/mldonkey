@@ -44,7 +44,7 @@ type level = [ `LOG_EMERG | `LOG_ALERT | `LOG_CRIT | `LOG_ERR | `LOG_WARNING
 exception Syslog_error of string
 
 let facility_of_string s = 
-  match String.lowercase s with
+  match String.lowercase_ascii s with
       "kern" -> `LOG_KERN
     | "user" -> `LOG_USER
     | "mail" -> `LOG_MAIL
@@ -208,7 +208,7 @@ let syslog ?fac loginfo lev str =
     | None -> loginfo.fac in
   let levfac = Int32.logor realfac (level_to_num lev)
   and now = ascdate (localtime (Unix.time ())) in
-    Printf.bprintf msg "<%ld>%.15s " levfac now;
+    Printf.bprintf msg "<%ld>%s " levfac (String.sub now 0 (min 15 (String.length now)));
     let len1 = Buffer.length msg 
     and len2 = String.length loginfo.tag in
       if len1 + len2 < 64 then

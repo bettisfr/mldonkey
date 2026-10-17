@@ -512,9 +512,9 @@ let value_to_port v =
   | v when v > 65535 -> 2000 + Random.int 40000
   | v -> v
 
-(* The Pervasives version is too restrictive *)
+(* The Stdlib version is too restrictive *)
 let bool_of_string s =
-  match String.lowercase s with
+  match String.lowercase_ascii s with
     "true" -> true
   | "false" -> false
   | "yes" -> true

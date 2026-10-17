@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+include /usr/share/dpkg/buildflags.mk
+export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+PACKAGE_OUTPUT ?= ..
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+
+override_dh_auto_build:
+	./scripts/build.sh
+
+override_dh_auto_test:
+
+override_dh_auto_install:
+
+override_dh_auto_clean:
+	if test -f Makefile && test -f config/Makefile.config; then $(MAKE) clean; fi
+	dh_clean
+
+override_dh_strip:
+	dh_strip --no-automatic-dbgsym
+
+override_dh_builddeb:
+	dh_builddeb --destdir="$(PACKAGE_OUTPUT)"

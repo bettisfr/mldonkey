@@ -638,7 +638,7 @@ let rec validate_intervals limit = function
 let priority_zero = Char.chr 0
 
 let swarmer_recompute_priorities_bitmap s =
-  String.fill s.s_priorities_bitmap 0
+  Bytes.fill s.s_priorities_bitmap 0
     (Bytes.length s.s_priorities_bitmap) priority_zero;
   let mark interval_begin interval_end priority =
     if interval_end > interval_begin && s.s_size >= interval_end && interval_begin >= 0L then
@@ -649,9 +649,9 @@ let swarmer_recompute_priorities_bitmap s =
         let i_begin = compute_block_num s interval_begin in
         let i_end = compute_block_num s (Int64.pred interval_end) in
         let priochar = Char.chr (max 0 (min priority 255)) in
-  (*       String.fill s.s_priorities_bitmap i_begin (i_end - i_begin + 1) priochar *)
+  (*       Bytes.fill s.s_priorities_bitmap i_begin (i_end - i_begin + 1) priochar *)
         for i = i_begin to i_end do
-          s.s_priorities_bitmap.[i] <- priochar
+          Bytes.set s.s_priorities_bitmap (i) @@ priochar
         done
       end
     else

@@ -448,7 +448,7 @@ let allowed_ips = define_option current_section ["allowed_ips"]
   or 192.168.0.0-192.168.0.255 for 192.168.0.*"
     ip_range_list_option [ Ip.RangeSingleIp Ip.localhost ]
 
-let allowed_ips_set = ref Ip_set.bl_empty
+let allowed_ips_set = ref (Ip_set.of_list !!allowed_ips)
 
 let _ =
   option_hook allowed_ips (fun _ ->
@@ -1752,7 +1752,7 @@ let filter_search_delay = 5.0
 
 (* Infer which nets to start depending on the name used *)
 let _ =
-  let name = String.lowercase (Filename.basename Sys.argv.(0)) in
+  let name = String.lowercase_ascii (Filename.basename Sys.argv.(0)) in
   let name = try
       let pos = String.index name '+' in
       String.sub name 0 pos

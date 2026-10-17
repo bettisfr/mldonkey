@@ -72,8 +72,8 @@ let escape_colon s =
     let s' = Bytes.create (len + !n) in
     let j = ref 0 in
     for i = 0 to len - 1 do
-      if s.[i] = ':' then (s'.[!j] <- '\\'; incr j);
-      s'.[!j] <- s.[i]; incr j
+      if s.[i] = ':' then (Bytes.set s' (!j) @@ '\\'; incr j);
+      Bytes.set s' (!j) @@ s.[i]; incr j
     done;
     Bytes.unsafe_to_string s'
 

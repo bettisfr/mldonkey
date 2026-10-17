@@ -289,14 +289,14 @@ let rec get_page r content_handler f ferr =
         ok := true;
         let content_length = ref (-1L) in
         List.iter (fun (name, content) ->
-            match String.lowercase name with
+            match String.lowercase_ascii name with
             | "content-length" ->
                 (try
                   content_length := Int64.of_string content
                 with _ ->
                   lprintf_nl "bad content length [%s]" content)
             | "content-encoding" ->
-                if String.lowercase content = "gzip" then r.req_gzip <- true
+                if String.lowercase_ascii content = "gzip" then r.req_gzip <- true
             | _ -> ()
         ) headers;
         let location = "Location", Url.to_string old_url in
@@ -313,7 +313,7 @@ let rec get_page r content_handler f ferr =
             try
               let url = ref "" in
             List.iter (fun (name, content) ->
-                  if String.lowercase name = "location" then
+                  if String.lowercase_ascii name = "location" then
                     url := content;
                 ) headers;
             if !verbose then print_headers ();
@@ -392,7 +392,7 @@ let rec get_page r content_handler f ferr =
 let io_copy input output =
   try
     let size = 16 * 1024 in
-    let s = String.create size in
+    let s = Bytes.create size in
     while true do
       let n = IO.input input s 0 size in
       if n = 0 then raise IO.No_more_input;
@@ -547,7 +547,7 @@ let cut_headers headers =
         let pos = String.index s ':' in
         let len = String.length s in
         let key = String.sub s 0 pos in
-        String.lowercase key, if pos+1 < len && s.[pos+1] = ' ' then
+        String.lowercase_ascii key, if pos+1 < len && s.[pos+1] = ' ' then
           String.sub s (pos+2) (len-pos-2), key
         else
           String.sub s (pos+1) (len-pos-1), key

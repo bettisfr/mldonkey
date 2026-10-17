@@ -1,0 +1,20 @@
+Source: mldonkey
+Section: net
+Priority: optional
+Maintainer: MLDonkey fork maintainers <maintainers@example.invalid>
+Build-Depends: debhelper-compat (= 13), autoconf, m4, pkg-config,
+ ocaml (>= 5.0), ocaml-findlib, camlp4, libcamlp-streams-ocaml-dev,
+ libnum-ocaml-dev, zlib1g-dev, libbz2-dev, libgd-dev, libmagic-dev
+Standards-Version: 4.7.0
+Rules-Requires-Root: no
+Homepage: https://github.com/ygrek/mldonkey
+
+Package: mldonkey-server
+Architecture: any
+Provides: mldonkey
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, init-system-helpers (>= 1.52)
+Description: MLDonkey multi-network server, ported to OCaml 5
+ Background server for eDonkey, Kad, Overnet, BitTorrent, Direct Connect,
+ Fasttrack and HTTP/FTP. Controlled through a separate frontend such as
+ KMLDonkey, or the built-in web interface.
+ This independent fork is based on MLDonkey 3.2.1.

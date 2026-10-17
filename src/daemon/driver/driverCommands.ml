@@ -57,6 +57,16 @@ let lprintf_n fmt =
 let _s x = _s "DriverCommands" x
 let _b x = _b "DriverCommands" x
 
+let check_download_folder directory =
+  if not (Unix2.is_directory directory) then
+    failwith "Folder does not exist or is not accessible";
+  let probe = Filename.temp_file ~temp_dir:directory "mldonkey-path-check-" ".tmp" in
+  Fun.protect ~finally:(fun () -> try Sys.remove probe with _ -> ()) (fun () ->
+      let channel = open_out_bin probe in
+      Fun.protect ~finally:(fun () -> close_out_noerr channel) (fun () ->
+          output_string channel "MLDonkey folder access check\n";
+          flush channel))
+
 type command_links_data = {
   filename : string;
   filesize : int64;
@@ -1160,7 +1170,7 @@ let _ =
         in
         if user2_is_admin o.conn_user.ui_user then begin
         (
-                match (List.map String.lowercase args) with
+                match (List.map String.lowercase_ascii args) with
                 | ["high"] ->
                         if !!max_opened_connections < !!max_opened_connections_2 then
                                 change_bw ()
@@ -1180,7 +1190,7 @@ let _ =
 
     "costats", Arg_multiple (fun args o ->
         let filter cs =
-          match (List.map String.lowercase args) with
+          match (List.map String.lowercase_ascii args) with
           | [] -> cs.country_total_upload <> 0L || cs.country_total_download <> 0L
           | ["all"] -> true
           | args ->
@@ -1191,7 +1201,7 @@ let _ =
                 ^ (Str.global_replace match_star ".*" a)) "" args)
                 ^ "\\)$") in
               let check_string s =
-                Str.string_match regexp (String.lowercase s) 0 in
+                Str.string_match regexp (String.lowercase_ascii s) 0 in
               check_string cs.country_code ||
               check_string cs.country_name ||
               check_string cs.country_continent
@@ -1310,7 +1320,7 @@ let _ =
               Printf.bprintf buf "\\<tr class=\\\"dl-%d\\\"\\>" (html_mods_cntr ());
               html_mods_td buf [
                 ("", "sr ar", Printf.sprintf "%d" i);
-                (Geoip.country_code_array.(i), "sr", CommonPictures.flag_html (String.lowercase Geoip.country_code_array.(i)));
+                (Geoip.country_code_array.(i), "sr", CommonPictures.flag_html (String.lowercase_ascii Geoip.country_code_array.(i)));
                 ("", "sr", Geoip.country_name_array.(i));
                 ("", "sr", Geoip.country_continent_code_array.(i));
                 ("", "sr", Geoip.country_continent_name_array.(i));
@@ -2630,6 +2640,35 @@ let _ =
           _s "You are not allowed to list shared directories"
     ), ":\t\t\t\tprint shared directories";
 
+    "check_download_directory", Arg_one (fun directory o ->
+        if not (user2_is_admin o.conn_user.ui_user) then
+          _s "Administrator access is required"
+        else try
+          check_download_folder directory;
+          "directory writable"
+        with error -> "directory not writable: " ^ Printexc.to_string error
+    ), "<directory> : check download folder access as the core user";
+
+    "set_download_folders", Arg_two (fun files directories o ->
+        if not (user2_is_admin o.conn_user.ui_user) then
+          _s "Administrator access is required"
+        else try
+          check_download_folder files;
+          check_download_folder directories;
+          let seen_files = ref false and seen_directories = ref false in
+          let desired = List.map (fun entry ->
+              if entry.shdir_strategy = "incoming_files" && not !seen_files then begin
+                seen_files := true; { entry with shdir_dirname = files }
+              end else if entry.shdir_strategy = "incoming_directories" && not !seen_directories then begin
+                seen_directories := true; { entry with shdir_dirname = directories }
+              end else entry) !!shared_directories in
+          if not !seen_files || not !seen_directories then
+            failwith "Incoming folder entries are missing";
+          shared_directories =:= desired;
+          "download folders changed"
+        with error -> "Cannot change download folders: " ^ Printexc.to_string error
+    ), "<files> <directories> : change the primary completed download folders";
+
     "share", Arg_multiple (fun args o ->
         if user2_is_admin o.conn_user.ui_user then begin
         let (prio, arg, strategy) = match args with
@@ -3034,7 +3073,7 @@ let () =
     ), "<file number> <random|linear> :\tchange download order of file blocks (default random, with first and last block first)";
 
     "confirm", Arg_one (fun arg o ->
-        match String.lowercase arg with
+        match String.lowercase_ascii arg with
           "yes" | "y" | "true" ->
             List.iter (fun file ->
                 try
@@ -3292,7 +3331,7 @@ let _ =
     "useradd", Arg_multiple (fun args o ->
         let group_convert g =
           try
-            if String.lowercase g = "none" || g = "" then None
+            if String.lowercase_ascii g = "none" || g = "" then None
             else Some (user2_group_find g).group_name
           with Not_found -> None
         in
@@ -3425,7 +3464,7 @@ let _ =
               let u = user2_user_find user in
                 begin
                   try
-                    let g = if String.lowercase group = "none" then None else Some (user2_group_find group) in
+                    let g = if String.lowercase_ascii group = "none" then None else Some (user2_group_find group) in
                     let update_dgroup () =
                       match g with
                         None -> true
@@ -3799,7 +3838,7 @@ class=\\\"sr ac\\\"\\>%s\\</td\\>"
         let num = int_of_string filenum in
         begin try
           let file = file_find num in
-          if String.lowercase group = "none" then
+          if String.lowercase_ascii group = "none" then
             begin
               if user2_allow_file_admin file o.conn_user.ui_user then
                 begin

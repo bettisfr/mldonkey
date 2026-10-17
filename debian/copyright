@@ -1,0 +1,968 @@
+MLDonkey, based on upstream version 3.2.1:
+https://github.com/ygrek/mldonkey
+
+Copyright 2001-2024 the MLDonkey authors and contributors.
+See Authors.txt and the notices below for individual attributions.
+The main program is distributed under the GNU General Public License,
+version 2 or, for files that permit it, any later version.
+The complete GPL version 2 is installed as Copying.txt and is available
+on Debian systems at /usr/share/common-licenses/GPL-2.
+
+The following source files contain notices for bundled components.
+Their original notices are reproduced below.
+
+/* Copyright 2001, 2002 b8_bavard, b8_fee_carabine, INRIA */
+
+/*
+    This file is part of mldonkey.
+
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+*/
+
+(* Copyright 2001, 2002 b8_bavard, b8_fee_carabine, INRIA *)
+
+(*
+    This file is part of mldonkey.
+
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(* Copyright 2006 pango *)
+
+(*
+    This client is part of mldonkey.
+
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(* Copyright 2001, 2002 b52_simon :), b8_bavard, b8_fee_carabine, INRIA *)
+
+(* Copyright 2007, spiralvoice *)
+
+(*
+    This server is part of mldonkey.
+
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(* Copyright 2001, 2002 Simon, INRIA *)
+
+(*  
+    This file is part of mldonkey. 
+        
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+  
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(* Copyright 2006 MLDonkey project *)
+
+(* Copyright 2005 beedauchon *)
+
+(* Copyright 2003, Denis Fortin
+
+    This file is part of mldonkey.
+
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(* Copyright 2003, Denis Fortin
+   Heavily based on file CurrentRateMeasure.py
+   from BitTorrent 3.3 by Bram Cohen
+ *)
+
+/* DCTC - a Direct Connect text clone for Linux
+ * Copyright (C) 2001 Eric Prevoteau
+ *
+ * he3.c: Copyright (C) Eric Prevoteau <www@ac2i.tzo.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+(* Copyright 2002 b8_bavard, b8_fee_carabine, INRIA *)
+
+(* Copyright 2001, 2002 pango *)
+
+(* Copyright 2006 *)
+
+(* Copyright 2001, 2002 Francois *)
+
+(* Copyright 2003 pango *)
+
+/*
+ * $Id$
+ *
+ * Copyright (C) 2003 giFT-FastTrack project
+ * http://developer.berlios.de/projects/gift-fasttrack
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+/*
+ *
+ * Copyright (C) 2003 giFT-FastTrack project
+ * Portions Copyright (C) 2001 Shtirlitz <shtirlitz@unixwarez.net>
+ * http://developer.berlios.de/projects/gift-fasttrack
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+/*
+ *
+ * Copyright (C) 2003 giFT-FastTrack project
+ * http://developer.berlios.de/projects/gift-fasttrack
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+(* Copyright 2002 vernin, INRIA *)
+
+(*
+  This file is part of mldonkey.
+
+  mldonkey is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  mldonkey is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with mldonkey; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(* Bitstring library.
+ * Copyright (C) 2008 Red Hat Inc., Richard W.M. Jones
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version,
+ * with the OCaml linking exception described in COPYING.LIB.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ *
+ * $Id$
+ *)
+
+(* Copyright (C) 2008 Red Hat Inc., Richard W.M. Jones
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version,
+ * with the OCaml linking exception described in COPYING.LIB.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ *
+ * $Id$
+ *)
+
+/*
+ * Bitstring library.
+ *
+ * Copyright (C) 2008-2016 Red Hat Inc., Richard W.M. Jones
+ * Copyright (C) 2016 Red Hat Inc, Richard W.M. Jones, Xavier R. Guerin.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version,
+ * with the OCaml linking exception described in COPYING.LIB.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
+/* byteswap.h - Byte swapping
+   Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+   Written by Oskar Liljeblad <oskar@osk.mine.nu>, 2005.
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* NB:
+
+   This file is from Gnulib, and in accordance with the convention
+   there, the real license of this file comes from the module
+   definition.  It is really LGPLv2+.
+
+   - RWMJ. 2008/08/23
+*/
+
+(*  Copyright 1996 Institut National de Recherche en Informatique et   *)
+
+(*  under the terms of the GNU Library General Public License, with    *)
+
+(*  the special exception on linking described in file ../LICENSE.     *)
+
+/*
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+Boston, MA  02110-1301, USA.
+*/
+
+(*
+ * OCaml-Gd. An interface to the Gd library for generating simple images
+ * Based on Shawn Wagner's OCamlGD 0.7.0. with some mods from GD4O 
+ * Copyright (C) 2002  Shawn Wagner
+ * Copyright (C) 2003  Matthew C. Gushee
+ * Copyright (C) 2005  beedauchon 
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
+/*
+ * OCaml-Gd. An interface to the Gd library for generating simple images
+ * Based on Shawn Wagner's OCamlGD 0.7.0. with some mods from GD4O
+ * Copyright (C) 2002  Shawn Wagner
+ * Copyright (C) 2003  Matthew C. Gushee
+ * Copyright (C) 2005  beedauchon
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
+(*  Copyright 2001 Institut National de Recherche en Informatique et   *)
+
+(*  the special exception on linking described in file LICENSE.        *)
+
+(*  under the terms of the GNU Lesser General Public License, with     *)
+
+/*  Copyright 2001 Institut National de Recherche en Informatique et   */
+
+/*  under the terms of the GNU Lesser General Public License, with     */
+
+/*  the special exception on linking described in file LICENSE.        */
+
+(*
+ * IO - Abstract input/output
+ * Copyright (C) 2003 Nicolas Cannasse
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
+(*
+ * Bit vectors.
+ * Copyright (C) 1999 Jean-Christophe FILLIATRE
+ * 
+ * This software is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License version 2, as published by the Free Software Foundation.
+ * 
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * 
+ * See the GNU Library General Public License version 2 for more details
+ * (enclosed in the file LGPL).
+ *)
+
+(* Copyright 2005 b8_bavard, INRIA *)
+
+(* Copyright 2002, 2003 Yamagata Yoriyuki. distributed with LGPL *)
+
+/* Copyright 2005 b8_bavard, INRIA */
+
+/*
+ * Copyright (C) 2003 Markus Kern (mkern@users.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+(* File: magic.ml
+
+   Copyright (C) 2005
+
+     Christophe Troestler
+     email: Christophe.Troestler@umh.ac.be
+     WWW: http://www.umh.ac.be/math/an/software/
+
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public License
+   version 2.1 as published by the Free Software Foundation, with the
+   special exception on linking described in file LICENSE.
+
+   This library is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the file
+   LICENSE for more details.
+*)
+
+(* File: magic.mli
+
+   Copyright (C) 2005
+
+     Christophe Troestler
+     email: Christophe.Troestler@umh.ac.be
+     WWW: http://www.umh.ac.be/math/an/software/
+
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public License
+   version 2.1 as published by the Free Software Foundation, with the
+   special exception on linking described in file LICENSE.
+
+   This library is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the file
+   LICENSE for more details.
+*)
+
+/* File: magic.ml
+
+   Copyright (C) 2005
+
+     Christophe Troestler
+     email: Christophe.Troestler@umh.ac.be
+     WWW: http://www.umh.ac.be/math/an/software/
+
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public License
+   version 2.1 as published by the Free Software Foundation, with the
+   special exception on linking described in file LICENSE.
+
+   This library is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the file
+   LICENSE for more details.
+*/
+
+/*
+    This file is part of mldonkey.
+
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+
+/* Copyright (C) 1990-2, RSA Data Security, Inc. All rights reserved.
+
+   License to copy and use this software is granted provided that it
+   is identified as the "RSA Data Security, Inc. MD4 Message-Digest
+   Algorithm" in all material mentioning or referencing this software
+   or this function.
+
+   License is also granted to make and use derivative works provided
+   that such works are identified as "derived from the RSA Data
+   Security, Inc. MD4 Message-Digest Algorithm" in all material
+   mentioning or referencing the derived work.
+
+   RSA Data Security, Inc. makes no representations concerning either
+   the merchantability of this software or the suitability of this
+   software for any particular purpose. It is provided "as is"
+   without express or implied warranty of any kind.
+
+   These notices must be retained in any copies of any part of this
+   documentation and/or software.
+ */
+
+/*
+  Copyright (C) 1999 Aladdin Enterprises.  All rights reserved.
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+
+  L. Peter Deutsch
+  ghost@aladdin.com
+
+ */
+
+(*
+    This file is part of mldonkey.
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+*)
+
+/*
+ ---------------------------------------------------------------------------
+ Copyright (c) 2002, Dr Brian Gladman, Worcester, UK.   All rights reserved.
+
+ LICENSE TERMS
+
+ The free distribution and use of this software in both source and binary
+ form is allowed (with or without changes) provided that:
+
+   1. distributions of this source code include the above copyright
+      notice, this list of conditions and the following disclaimer;
+
+   2. distributions in binary form include the above copyright
+      notice, this list of conditions and the following disclaimer
+      in the documentation and/or other associated materials;
+
+   3. the copyright holder's name is not used to endorse products
+      built using this software without specific written permission.
+
+ ALTERNATIVELY, provided that this notice is retained in full, this product
+ may be distributed under the terms of the GNU General Public License (GPL),
+ in which case the provisions of the GPL apply INSTEAD OF those given above.
+
+ DISCLAIMER
+
+ This software is provided 'as is' with no explicit or implied warranties
+ in respect of its properties, including, but not limited to, correctness
+ and/or fitness for purpose.
+ ---------------------------------------------------------------------------
+ Issue Date: 16/01/2004
+
+ This is a byte oriented version of SHA1 that operates on arrays of bytes
+ stored in memory. It runs at 22 cycles per byte on a Pentium P4 processor
+ */
+
+/*
+    This file is part of mldonkey.
+
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+     */
+
+/*
+ ---------------------------------------------------------------------------
+ Copyright (c) 2002, Dr Brian Gladman, Worcester, UK.   All rights reserved.
+
+ LICENSE TERMS
+
+ The free distribution and use of this software in both source and binary
+ form is allowed (with or without changes) provided that:
+
+   1. distributions of this source code include the above copyright
+      notice, this list of conditions and the following disclaimer;
+
+   2. distributions in binary form include the above copyright
+      notice, this list of conditions and the following disclaimer
+      in the documentation and/or other associated materials;
+
+   3. the copyright holder's name is not used to endorse products
+      built using this software without specific written permission.
+
+ ALTERNATIVELY, provided that this notice is retained in full, this product
+ may be distributed under the terms of the GNU General Public License (GPL),
+ in which case the provisions of the GPL apply INSTEAD OF those given above.
+
+ DISCLAIMER
+
+ This software is provided 'as is' with no explicit or implied warranties
+ in respect of its properties, including, but not limited to, correctness
+ and/or fitness for purpose.
+ ---------------------------------------------------------------------------
+ Issue Date: 26/08/2003
+*/
+
+/*
+    This file is part of mldonkey.
+
+    mldonkey is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    mldonkey is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with mldonkey; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
+(* syslog(3) routines for ocaml
+   This library is based on Shawn Wagner's original syslog
+   library as included in annexlib, with significant modifications
+   by by Eric Stokes <eric.stokes@csun.edu>.
+
+   Copyright (C) 2002 Shawn Wagner <raevnos@pennmush.org>
+   Copyright (C) 2005 Eric Stokes <eric.stokes@csun.edu>
+
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+         
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+         
+   You should have received a copy of the GNU Lesser General Public
+   License along with this library; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(* syslog(3) routines for ocaml
+   Copyright (C) 2002 Shawn Wagner <raevnos@pennmush.org>
+
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+         
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+         
+   You should have received a copy of the GNU Lesser General Public
+   License along with this library; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(*  Copyright 2003, 2002 b8_bavard, b8_zoggy, , b52_simon INRIA            *)
+
+(*    it under the terms of the GNU General Public License as published   *)
+
+(*    by the Free Software Foundation; either version 2 of the License,   *)
+
+(*    GNU General Public License for more details.                        *)
+
+(*    You should have received a copy of the GNU General Public License   *)
+
+(* Copyright 2006 z *)
+
+(*  Copyright (c) 2010 zzz <jian@doatest.com>                             *)
+
+(*  publish, distribute, sublicense, and/or sell copies of the Software,  *)
+
+(*  The above copyright notice and this permission notice shall be        *)
+
+(*  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS   *)
+
+/*  Copyright (c) 2010 zzz <jian@doatest.com>                             */
+
+/*  publish, distribute, sublicense, and/or sell copies of the Software,  */
+
+/*  The above copyright notice and this permission notice shall be        */
+
+/*  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS   */
+
+(*    Copyright (C) 2003 Institut National de Recherche en Informatique et       *)
+
+(*    it under the terms of the GNU General Public License as published by       *)
+
+(*    the Free Software Foundation; either version 2 of the License, or          *)
+
+(*    GNU General Public License for more details.                               *)
+
+(*    You should have received a copy of the GNU General Public License          *)
+
+(** Copyright note *)
+
+(* This code from ocamlnet, by Gerd Stolpman, Patrick Doane and
+   Nicolas George.
+
+Copyright (c) 2001 Patrick Doane and Gerd Stolpmann
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must
+not claim that you wrote the original software. If you use this
+software in a product, an acknowledgment in the product documentation
+would be appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and must
+not be misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source
+distribution.
+
+*)
+
+(*
+ * Xml Light, an small Xml parser/printer with DTD support.
+ * Copyright (C) 2003 Nicolas Cannasse (ncannasse@motion-twin.com)
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
+(** Xml Light
+ 
+  Xml Light is a minimal Xml parser & printer for OCaml.
+  It provide few functions to parse a basic Xml document into
+  an OCaml data structure and to print back the data structures
+  to an Xml document.
+
+  Xml Light has also support for {b DTD} (Document Type Definition).
+
+  {i (c)Copyright 2002-2003 Nicolas Cannasse}
+*)
+
+(*
+ * Xml Light, an small Xml parser/printer with DTD support.
+ * Copyright (C) 2003 Nicolas Cannasse (ncannasse@motion-twin.com)
+ * Copyright (C) 2003 Jacques Garrigue
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
+
+(*
+ * Xml Light, an small Xml parser/printer with DTD support.
+ * Copyright (C) 2003 Nicolas Cannasse (ncannasse@motion-twin.com)
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+Crypto++ compilation notice:
+////////////////////////////////////////////////////////////////////////////////
+// 
+// This file contains a subset of the Crypto++ library (version 5.2.1), with 
+// kind permission from Wei Dai. Please note that this file should not reflect 
+// on the real Crypto++ library in any way, as this file been greatly mangled to 
+// reduce the code-size, since this app only makes use of RSA classes (for Secure 
+// Identification) and the MD4 hashing class (for FileIDs). 
+//
+// For the full Crypto++ library, please refer to the official Crypto++ website,
+// which can be found at, http://www.cryptopp.com
+// 
+////////////////////////////////////////////////////////////////////////////////
+// 
+// Compilation Copyright (c) 1995-2004 by Wei Dai.  All rights reserved.
+// This copyright applies only to this software distribution package 
+// as a compilation, and does not imply a copyright on any particular 
+// file in the package.
+// 
+// The following files are copyrighted by their respective original authors,
+// and their use is subject to additional licenses included in these files.
+// 
+// mars.cpp - Copyright 1998 Brian Gladman.
+
+// All other files in this compilation are placed in the public domain by
+// Wei Dai and other contributors.
+// 
+// I would like to thank the following authors for placing their works into
+// the public domain:
+// 
+// Joan Daemen - 3way.cpp
+// Leonard Janke - cast.cpp, seal.cpp
+// Steve Reid - cast.cpp
+// Phil Karn - des.cpp
+// Michael Paul Johnson - diamond.cpp
+// Andrew M. Kuchling - md2.cpp, md4.cpp
+// Colin Plumb - md5.cpp, md5mac.cpp
+// Seal Woods - rc6.cpp
+// Chris Morgan - rijndael.cpp
+// Paulo Baretto - rijndael.cpp, skipjack.cpp, square.cpp
+// Richard De Moliner - safer.cpp
+// Matthew Skala - twofish.cpp
+// Kevin Springle - camellia.cpp, shacal2.cpp, ttmac.cpp, whrlpool.cpp, ripemd.cpp
+// 
+// Permission to use, copy, modify, and distribute this compilation for
+// any purpose, including commercial applications, is hereby granted
+// without fee, subject to the following restrictions:
+// 
+// 1. Any copy or modification of this compilation in any form, except
+// in object code form as part of an application software, must include
+// the above copyright notice and this license.
+// 
+// 2. Users of this software agree that any modification or extension
+// they provide to Wei Dai will be considered public domain and not
+// copyrighted unless it includes an explicit copyright notice.
+// 
+// 3. Wei Dai makes no warranty or representation that the operation of the
+// software in this compilation will be error-free, and Wei Dai is under no
+// obligation to provide any services, by way of maintenance, update, or
+// otherwise.  THE SOFTWARE AND ANY DOCUMENTATION ARE PROVIDED "AS IS"
+// WITHOUT EXPRESS OR IMPLIED WARRANTY INCLUDING, BUT NOT LIMITED TO,
+// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+// PURPOSE. IN NO EVENT WILL WEI DAI OR ANY OTHER CONTRIBUTOR BE LIABLE FOR
+// DIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES, EVEN IF
+// ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+// 
+// 4. Users will not use Wei Dai or any other contributor's name in any 
+// publicity or advertising, without prior written consent in each case.
+// 
+// 5. Export of this software from the United States may require a
+// specific license from the United States Government.  It is the
+// responsibility of any person or organization contemplating export
+// to obtain such a license before exporting.
+// 
+// 6. Certain parts of this software may be protected by patents.  It
+// is the users' responsibility to obtain the appropriate
+// licenses before using those parts.
+// 
+// If this compilation is used in object code form in an application
+// software, acknowledgement of the author is not required but would be
+// appreciated. The contribution of any useful modifications or extensions
+// to Wei Dai is not required but would also be appreciated.
+// 
+////////////////////////////////////////////////////////////////////////////////
+

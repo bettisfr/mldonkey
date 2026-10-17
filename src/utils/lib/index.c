@@ -144,7 +144,7 @@ static int add_stemmed_word(index_struct *idx){
   return add_new_word(idx, stemmed_word);
 }
 
-static array_struct *alloc_array(index_struct *idx)
+static array_struct *caml_alloc_array(index_struct *idx)
 {
   array_struct *array=  index_alloc(sizeof(tree_struct) + 
     2 * MAX_LINEAR_SEARCH * sizeof(suffix_struct));
@@ -160,7 +160,7 @@ static int add_prefix_in_tree(index_struct *idx, char *suffix,
   tree_struct *tree, tree_struct **tree_ptr)
 {
   if(tree == NULL){
-    tree = (tree_struct*) alloc_array(idx);
+    tree = (tree_struct*) caml_alloc_array(idx);
     *tree_ptr = tree;
   }
   
@@ -209,7 +209,7 @@ static int add_prefix_in_tree(index_struct *idx, char *suffix,
         array_struct *nr = (array_struct*) next_tree;
         
         if(nr == NULL){
-          nr = alloc_array(idx);
+          nr = caml_alloc_array(idx);
           new_tree->tree_subtrees[(int) word[0]] = (tree_struct*) nr;
         }
         nr->array_suffixes[nr->array_nprefixes].suffix_word = word+1;
@@ -225,7 +225,7 @@ static int add_prefix_in_tree(index_struct *idx, char *suffix,
         array_struct *nr = (array_struct*) next_tree;
         
         if(nr == NULL){
-          nr = alloc_array(idx);
+          nr = caml_alloc_array(idx);
           new_tree->tree_subtrees[(int) word[0]] = (tree_struct*) nr;
         }
         nr->array_suffixes[MAX_LINEAR_SEARCH+nr->array_nsuffixes].suffix_word = word+1;

@@ -862,7 +862,7 @@ parent.fstatus.location.href='submit?q=chgrp+'+v+'+%d';
 
     end else
     begin
-      Printf.bprintf buf "[%-s %5d]\n%s\n%s%s\nTotal   %10s\nPartial %10s\npriority %d\nOwner/Group: %s/%s\n"
+      Printf.bprintf buf "[%s %5d]\n%s\n%s%s\nTotal   %10s\nPartial %10s\npriority %d\nOwner/Group: %s/%s\n"
         n.network_name
         (file_num file)
         (shorten (file_best_name file) 80)
@@ -925,7 +925,7 @@ let recover_bytes file =
   let fd = file_fd file in
   let len = 32768 in
   let len64 = Int64.of_int len in
-  let s = String.create len in
+  let s = Bytes.create len in
   
   let rec iter_file_out file_pos segments =
 

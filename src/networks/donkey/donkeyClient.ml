@@ -566,7 +566,7 @@ let mod_array =
     ("webys", Brand_mod_webys)
   |]
   
-let to_lowercase s = String.lowercase s
+let to_lowercase s = String.lowercase_ascii s
 
 let string_of_tags_list tags =
   let s = ref "" in

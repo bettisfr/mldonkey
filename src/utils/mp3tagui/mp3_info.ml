@@ -93,7 +93,7 @@ let for_channel ic =
   really_input ic buf 0 4;
   while not (check_head @@ Bytes.unsafe_to_string buf) do
     Bytes.blit buf 1 buf 0 3;
-    buf.[3] <- input_char ic
+    Bytes.set buf (3) @@ input_char ic
   done;
   let buf = Bytes.unsafe_to_string buf in
   let header = 

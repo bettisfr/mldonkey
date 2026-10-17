@@ -192,9 +192,9 @@ int camlzip_zlibversion(void)
   CAMLparam0 ();
   CAMLlocal1 (v);
 #ifdef HAVE_ZLIBVERSION
-  v = copy_string (zlibVersion());
+  v = caml_copy_string (zlibVersion());
   CAMLreturn (v);
 #else
-  failwith("zlibVersion not found");
+  caml_failwith("zlibVersion not found");
 #endif
 }

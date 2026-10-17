@@ -99,7 +99,7 @@
 #define FALSE 0
 #define TRUE  1
 
-#define SizedString_val(x) String_val(x), string_length(x)
+#define SizedString_val(x) String_val(x), caml_string_length(x)
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \
@@ -170,7 +170,7 @@ raise_error(void)
     /* First time around, look up by name */
     closure_f = caml_named_value("charset_error");
   }
-  raise_constant(*closure_f);
+  caml_raise_constant(*closure_f);
 }
 
 int
@@ -1336,7 +1336,7 @@ ml_copy_string_len_and_free (char *str, size_t len)
   if (!str)
     raise_error ();
 
-  v = alloc_string (len);
+  v = caml_alloc_string (len);
   memcpy (String_val(v), str, len);
   free (str);
   return v;
@@ -1348,7 +1348,7 @@ ml_convert_string(value str, value to, value from)
   size_t bw = 0;
   char* c_res;
 
-  c_res = ml_convert(String_val(str),string_length(str),
+  c_res = ml_convert(String_val(str),caml_string_length(str),
                     String_val(to),String_val(from),
                     NULL,&bw);
 
@@ -1377,7 +1377,7 @@ ml_locale_charset(void)
   if (!str)
     raise_error ();
 
-  return (copy_string ((char*) str));
+  return (caml_copy_string ((char*) str));
 }
 
 /* taken and modify from gtk+ gtkmain.c */

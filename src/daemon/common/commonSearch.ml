@@ -807,7 +807,7 @@ let andnot q1 q2 = QAndNot (q1,q2)
 let rec mftp_query_of_query_entry qe =
   match qe with
     Q_AND ([]) -> QNone
-  | Q_AND [_] -> lprintf_nl "Q_AND [_]"; QNone
+  | Q_AND [q] -> mftp_query_of_query_entry q
   | Q_COMBO _ -> assert false
   | Q_AND (h :: q) ->
       List.fold_left
@@ -815,7 +815,7 @@ let rec mftp_query_of_query_entry qe =
         (mftp_query_of_query_entry h)
         q
 
-  | Q_OR [_] -> lprintf_nl "Q_OR [_]"; QNone
+  | Q_OR [q] -> mftp_query_of_query_entry q
   | Q_OR ([]) -> QNone
   | Q_OR (h :: q) ->
       List.fold_left
@@ -933,7 +933,7 @@ let local_search s =
   Local.find s
   
 let result_format_of_name name = 
-  match String.lowercase (Filename2.last_extension name ) with
+  match String.lowercase_ascii (Filename2.last_extension name ) with
     ".mpeg" -> "mpg"
   | ".jpeg" -> "jpg"
   | "" -> ""
@@ -942,7 +942,7 @@ let result_format_of_name name =
       n
     
 let result_media_of_name name = 
-  match String.lowercase (Filename2.last_extension name ) with
+  match String.lowercase_ascii (Filename2.last_extension name ) with
     ".mpg" | ".mpeg" | ".avi" | ".ogm" | ".divx" | ".mov" -> "Video"
   | ".mp3" | ".wav" | ".ogg" -> "Audio"
   | ".txt" | ".doc" -> "Doc"

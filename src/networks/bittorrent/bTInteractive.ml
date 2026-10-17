@@ -952,7 +952,7 @@ let load_torrent_from_web r user group ft =
         end)
 
 let valid_torrent_extension url =
-  let ext = String.lowercase (Filename2.last_extension url) in
+  let ext = String.lowercase_ascii (Filename2.last_extension url) in
   ext = ".torrent" || ext = ".tor"
 
 let get_regexp_string text r =

@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+if [ "$1" = configure ]; then
+    if ! getent passwd mldonkey > /dev/null; then
+        adduser --system --group --home /var/lib/mldonkey --no-create-home \
+            --disabled-login --gecos "MLDonkey server" mldonkey
+    fi
+    install -d -o mldonkey -g mldonkey -m 0750 /var/lib/mldonkey
+fi
+#DEBHELPER#

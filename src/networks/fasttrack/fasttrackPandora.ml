@@ -242,13 +242,13 @@ let parse (s_out : string) (s_in : string) =
           ;
 
           begin
-            let s = String.create 8 in
+            let s = Bytes.create 8 in
             cipher_packet_set ciphers.out_cipher s 0;
             lprintf "OUT CIPHER: [%s]\n" (String.escaped s);
           end;
 
           begin
-            let s = String.create 8 in
+            let s = Bytes.create 8 in
             cipher_packet_set ciphers.in_cipher s 0;
             lprintf "IN CIPHER: [%s]\n" (String.escaped s);
           end;
@@ -691,7 +691,7 @@ let received ip port time s =
 let read_trace () =
   let ic = open_in "ft_supernode.dump" in
   let buffer_size = 52000 in
-  let s = String.create buffer_size in
+  let s = Bytes.create buffer_size in
   let total = ref zero in
   let rec iter pos =
     let nread = input ic s pos (buffer_size - pos) in
