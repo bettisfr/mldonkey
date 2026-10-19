@@ -4,6 +4,13 @@ at https://github.com/ygrek/mldonkey/issues
 Changelog
 =========
 
+3.3.0 - 2026/10/19 (independent OCaml 5 port)
+------------------------------------------
+
+* Port the server and native bindings to OCaml 5.
+* Add native Debian packaging and fix search, folder settings and parallel builds.
+* Use eMule Security as the default server list source.
+
 3.2.1 - 2024/08/19
 ------------------
 

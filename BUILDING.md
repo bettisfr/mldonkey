@@ -30,6 +30,7 @@ bounds checks, and uses GNU C11 / C++14 for the bundled legacy C libraries.
 ```
 
 The `.deb`, `.buildinfo` and `.changes` files are written to `build-deb/`.
+The server package is `mldonkey-server_3.3.0_amd64.deb` on amd64.
 The package contains a stripped native binary, documentation, the default
 service options and a systemd unit. Debhelper calculates shared-library
 dependencies and generates service enable/start/stop/upgrade handling.

@@ -1,10 +1,12 @@
 # MLDonkey — OCaml 5 port
 
-An independent port of the **MLDonkey 3.2.1 server** to **OCaml 5**, intended
-for Ubuntu 26.04. This is a community fork, not a new upstream release.
+**MLDonkey 3.3.0** is an independent port of the **MLDonkey 3.2.1 server**
+to **OCaml 5**, intended for Ubuntu 26.04. This is a community fork, not a new upstream release.
 
 Fork: [bettisfr/mldonkey](https://github.com/bettisfr/mldonkey), with the port
 developed on the `ocaml5` branch from the upstream 3.2.1 release.
+The server and Debian package use version **3.3.0**; builds from a Git checkout
+append `.git` to the server version and retain revision information.
 
 MLDonkey supplies the `mlnet` core used by KMLDonkey. It includes eDonkey,
 Kad, Overnet, BitTorrent, Direct Connect, Fasttrack and HTTP/FTP support.
@@ -33,8 +35,8 @@ The old GTK interface is not built; use the Qt6/KF6 KMLDonkey frontend.
 **Experimental.** The server builds with OCaml 5.4.0 and GCC 15 on Ubuntu
 26.04 amd64. A full native build and Debian package generation have succeeded
 on the host with the system OCaml compiler. The resulting
-package is `mldonkey-server_3.2.1+ocaml5.5_amd64.deb`; this native rebuild has
-not been reinstalled or checked at runtime.
+package is `mldonkey-server_3.3.0_amd64.deb`. The 3.3.0 package has
+not yet been reinstalled or checked at runtime.
 
 Initial startup, native DNS resolution, GUI protocol 33 login,
 statistics and console replies have been checked over a sustained connection.
@@ -62,7 +64,7 @@ Install the dependencies from [BUILDING.md](BUILDING.md), then run:
 
 ```sh
 ./scripts/build-deb.sh
-sudo apt install ./build-deb/mldonkey-server_3.2.1+ocaml5.7_amd64.deb
+sudo apt install ./build-deb/mldonkey-server_3.3.0_amd64.deb
 ```
 
 The package installs `/usr/bin/mlnet` and enables the `mldonkey-server`
@@ -81,8 +83,39 @@ sudo systemctl restart mldonkey-server
 ```
 
 Stop the service before editing its `.ini` files manually, then start it again.
-Running `mlnet` directly uses upstream's normal per-user defaults; use the
-packaged service for the system installation described here.
+
+### Run as your own user
+
+For personal use, you can run the same installed binary under your own account.
+First stop and disable the system service so it does not start at boot:
+
+```sh
+sudo systemctl disable --now mldonkey-server
+```
+
+Start the core when you need it:
+
+```sh
+mlnet
+```
+
+It uses `~/.mldonkey` for configuration and working files. Completed individual
+files go to `~/.mldonkey/incoming/files` by default, completed multi-file downloads
+to `~/.mldonkey/incoming/directories`, and temporary files to `~/.mldonkey/temp`.
+Choose another destination through KMLDonkey's **Configure MLDonkey → Paths**.
+Folders must be writable by your user. The service's existing configuration and
+downloads in `/var/lib/mldonkey` are separate and are not migrated automatically.
+
+The terminal stays occupied; stop the core with Ctrl+C. To keep it running after
+closing the terminal, use:
+
+```sh
+nohup mlnet > "$HOME/.mldonkey-console.log" 2>&1 &
+```
+
+The old `-daemon` option is no longer supported. Neither command enables startup
+at boot. Connect KMLDonkey to `localhost:4001`; a fresh per-user configuration
+uses its own upstream defaults rather than `/etc/default/mldonkey-server`.
 
 ## Uninstall
 

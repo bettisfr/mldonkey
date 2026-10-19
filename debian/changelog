@@ -1,3 +1,10 @@
+mldonkey (3.3.0) unstable; urgency=medium
+
+  * Version the independent OCaml 5 port as 3.3.0, based on upstream 3.2.1.
+  * Align the server and Debian package versions.
+
+ -- MLDonkey fork maintainers <maintainers@example.invalid>  Mon, 19 Oct 2026 12:00:00 +0200
+
 mldonkey (3.2.1+ocaml5.7) unstable; urgency=medium
 
   * Generate bitstring .ml sources before scanning dependencies to fix clean
